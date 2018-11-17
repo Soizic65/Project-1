@@ -1,7 +1,7 @@
 body{
     background-image: url("../images/dark.jpg");
     
-    background-size: 400px 1040px;
+    background-size: 400px 1070px;
 }
 
 #quote{
@@ -21,7 +21,7 @@ body{
 }
 #searchBtn{
     height:60px;
-    margin-top:7%;
+    
 }
 #cityInput{
     line-height:50px;
@@ -37,19 +37,23 @@ form{
 
 #cityForm{
     display: block;
-    text-align: center; 
+    text-align: right; 
 }
 
 #inputSection{
-    padding:20%;
-    padding-bottom:37%;
-    
+    padding-top:20%;
+
 }
+    
     
 .container{
     background-image:linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("../images/beer.png");
     background-size: 2000px 1000px;
     padding:0;
+}
+#breweryList{
+    padding-bottom:30%;
+    padding-top:10%;
 }
     
     
