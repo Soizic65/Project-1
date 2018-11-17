@@ -21,7 +21,42 @@ $("#searchBtn").on("click", function () {
         method: "GET",
     }).then(function (response) {
 
-        $("#cityForm").append("<h1>hello</h1><h1>there</h2>")
+        console.log(response)
+
+        response.forEach(function(theBreweries) {
+            if(theBreweries.street === "") {
+                theBreweries.street = "Unavailable"
+            }
+        })
+
+        $("#breweryList").append(`
+            <table class='table table-dark'>
+                <thead>
+                    <tr>
+                        <th>Brewery Name</td>
+                        <th>Location</td>
+                    </tr>
+                </thead>
+                <tbody id='theBody'>
+
+                </tbody>
+
+
+            </table>
+        `)
+
+        response.forEach(function(eachBrewery) {
+            var breweryName = eachBrewery.name
+            var breweryLocation = eachBrewery.street
+
+            $("#theBody").append(`
+                <tr>
+                    <td>${breweryName}</td>
+                    <td>${breweryLocation}</td>
+                </tr>
+            `)
+
+        })
 
     })
 
