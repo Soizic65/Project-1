@@ -1,11 +1,11 @@
 var config = {
-    apiKey: "AIzaSyB9EFbkkslQZKdh_Nm8lGB9KfwZCCHGDWI",
-    authDomain: "brewery-crawl.firebaseapp.com",
-    databaseURL: "https://brewery-crawl.firebaseio.com",
-    projectId: "brewery-crawl",
-    storageBucket: "brewery-crawl.appspot.com",
-    messagingSenderId: "958356463401"
-};
+    apiKey: "AIzaSyAtoXNi11pzQhYSe5zMOQvM5BfPb0xRfYs",
+    authDomain: "brewery-crawl-ccd46.firebaseapp.com",
+    databaseURL: "https://Brewery-Crawl.firebaseio.com",
+    projectId: "brewery-crawl-ccd46",
+    storageBucket: "<BUCKET>.appspot.com",
+    messagingSenderId: "322173165333",
+  };
 firebase.initializeApp(config);
 
 
@@ -20,6 +20,7 @@ $("#searchBtn").on("click", function () {
         url: queryURL,
         method: "GET",
     }).then(function (response) {
+
 
         console.log(response)
 
@@ -57,6 +58,9 @@ $("#searchBtn").on("click", function () {
             `)
 
         })
+
+        console.log(response);
+
 
     })
 
