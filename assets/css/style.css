@@ -1,0 +1,56 @@
+body{
+    background-image: url("../images/dark.jpg");
+    
+    background-size: 400px 1040px;
+}
+
+#quote{
+    font-style:italic;
+    text-align:center;
+    color:white;
+    
+}
+.jumbotron{
+    background-image:linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("../images/rows.jpg");
+    background-repeat: no-repeat;
+    margin:0;
+}
+#city{
+    font-size:30px;
+    color:white;
+}
+#searchBtn{
+    height:60px;
+    margin-top:7%;
+}
+#cityInput{
+    line-height:50px;
+    width:100%;
+}
+
+form{
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+#cityForm{
+    display: block;
+    text-align: center; 
+}
+
+#inputSection{
+    padding:20%;
+    padding-bottom:37%;
+    
+}
+    
+.container{
+    background-image:linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("../images/beer.png");
+    background-size: 2000px 1000px;
+    padding:0;
+}
+    
+    
+
