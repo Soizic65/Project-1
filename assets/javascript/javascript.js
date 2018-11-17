@@ -21,7 +21,7 @@ $("#searchBtn").on("click", function () {
         method: "GET",
     }).then(function (response) {
 
-        $("#cityForm").append("<h1>hello</h1><h1>there</h2>")
+        console.log(response);
 
     })
 
