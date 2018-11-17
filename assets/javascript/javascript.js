@@ -5,23 +5,24 @@ var config = {
     projectId: "brewery-crawl",
     storageBucket: "brewery-crawl.appspot.com",
     messagingSenderId: "958356463401"
-  };
-  firebase.initializeApp(config);
+};
+firebase.initializeApp(config);
 
 
 
+$("#searchBtn").on("click", function () {
 
+    var theCity = $("#cityInput").val().toLowerCase()
 
+    var queryURL = "https://api.openbrewerydb.org/breweries?by_city=" + theCity
 
-var queryURL = 
+    $.ajax({
+        url: queryURL,
+        method: "GET",
+    }).then(function (response) {
 
+        $("#cityForm").append("<h1>hello</h1><h1>there</h2>")
 
+    })
 
-$.ajax({
-    url: queryURL,
-    method: "GET",
-}).then(function (response) {
-    
-        
-        
 })
