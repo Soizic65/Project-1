@@ -75,25 +75,25 @@ $("#searchBtn").on("click", function () {
 
 $(document).ready(function() {
 
-    function clear() {
-        $("").val("");
-        $("").val("");
-    }
+    // function clear() {
+    //     $("").val("");
+    //     $("").val("");
+    // }
 
-    $("#submit-btn").on("click", function(event) {
+    // $("#submit-btn").on("click", function(event) {
 
-     let name = $("inputName").val().trim();
-     let number = $("inputNumber").val().trim();
+    //  let name = $("inputName").val().trim();
+    //  let number = $("inputNumber").val().trim();
 
-     const userInfo = {
-         name: name,
-         number: number,
-     }
+    //  const userInfo = {
+    //      name: name,
+    //      number: number,
+    //  }
 
-     database.ref().push(userInfo)
-     clear();
+    //  database.ref().push(userInfo)
+    //  clear();
 
-    });
+    // });
 
   
     // Make var that will take the name and have the name 
