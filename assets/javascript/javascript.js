@@ -15,7 +15,7 @@ $(document).ready(function() {
 
 
 $("#searchBtn").on("click", function () {
-
+    $("#breweryList").empty()
     var theCity = $("#cityInput").val().toLowerCase()
 
     var queryURL = "https://api.openbrewerydb.org/breweries?by_city=" + theCity
