@@ -103,12 +103,12 @@ $(document).ready(function () {
 
     // Appending info from Firebase to the table
 
-    database.ref().on("child_added", function (childSnapshot) {
+    database.ref().on("child_added", function(childSnapshot) {
         let name = childSnapshot.val().name
         $(`
         <tr>
             <td scope="row">${name}</td>
-        `).appendTo('#nameField')
+        `).appendTo('#contactList')
     })
 
 
