@@ -1,4 +1,3 @@
-
 var config = {
     apiKey: "AIzaSyAtoXNi11pzQhYSe5zMOQvM5BfPb0xRfYs",
     authDomain: "brewery-crawl-ccd46.firebaseapp.com",
@@ -11,7 +10,6 @@ firebase.initializeApp(config);
 
 var database = firebase.database();
 
-$(document).ready(function() {
 
 
 $("#searchBtn").on("click", function () {
@@ -131,4 +129,3 @@ $("#searchBtn").on("click", function () {
         });
     });
 });
-
