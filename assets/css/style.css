@@ -55,6 +55,18 @@ form{
     padding-bottom:30%;
     padding-top:10%;
 }
+
+.input-fields {
+    padding:15px;
+}
+
+#submitBtn {
+
+}
     
+.contactContainer {
+    background-color: white;
+    padding: 10px;
+}
     
 
