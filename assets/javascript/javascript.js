@@ -72,6 +72,11 @@ $("#searchBtn").on("click", function () {
 
 })
 
+$("#theForm").submit(function() {
+    $("#searchBtn").click()
+    return false
+})
+
 // This is the Twilio portion of our javascript
 // Send a SMS when button is clicked!
 
