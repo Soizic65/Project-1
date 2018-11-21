@@ -9,6 +9,9 @@ var config = {
   };
 firebase.initializeApp(config);
 
+var database = firebase.database();
+
+$(document).ready(function() {
 
 
 $("#searchBtn").on("click", function () {
@@ -64,5 +67,68 @@ $("#searchBtn").on("click", function () {
 
 
     })
+  
+
 
 })
+
+// This is the Twilio portion of our javascript
+// Send a SMS when button is clicked!
+
+
+
+
+
+
+    // function clear() {
+    //     $("").val("");
+    //     $("").val("");
+    // }
+
+    // $("#submit-btn").on("click", function(event) {
+
+    //  let name = $("inputName").val().trim();
+    //  let number = $("inputNumber").val().trim();
+
+    //  const userInfo = {
+    //      name: name,
+    //      number: number,
+    //  }
+
+    //  database.ref().push(userInfo)
+    //  clear();
+
+    // });
+
+  
+    // Make var that will take the name and have the name 
+    // hold the value of number and pull from Firebase  
+
+
+
+    $("#textBtn").click(function() {
+        
+        const SID = "ACde7d929d4b9b0f7e32b6f0f553fe9667"
+        const Key = "41cdc646ad2521c5e86216b3b17dca1b"
+
+        $.ajax({
+            type: 'POST',
+            url: 'https://api.twilio.com/2010-04-01/Accounts/' + SID + '/Messages.json',
+            data: {
+                "To" : "+16025494594",
+                "From" : "+19562671699",
+                "Body" : "I can see you"
+            },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader ("Authorization", "Basic " + btoa(SID + ':' + Key));
+            },
+            success: function(data) {
+                console.log(data);
+            },
+            error: function(data) {
+                console.log(data);
+            }
+        });
+    });
+});
+
