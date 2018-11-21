@@ -29,38 +29,47 @@
                 </div>
             </div>
         </div>
-        <div class="contactContainer">
-            <form>
-                <div class="form-group">
-                  <label for="nameInput">Name</label>
-                  <input type="name" class="form-control" id="nameInput" placeholder="John Doe">
-                </div>
-                <div class="form-group">
-                  <label for="phoneNumberInput">Phone Number</label>
-                  <input type="phone-number" class="form-control" id="phoneNumberInput" placeholder="555-123-4567">
-                </div>
-                <button type="submit" class="btn btn-secondary">Submit</button>
-            </form>
-        </div>
+        <div class="row">
+        <div class="col-6 col-md-4">
         <div class="card">
-            <div class="card-header">
-                Contact List
+            <h5 class="card-header">Create New Contact</h5>
+            <div class="card-body">
+                <form>
+                    <div class="form-group">
+                        <label for="nameInput">Name</label>
+                        <input type="name" class="form-control" id="nameInput" placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneNumberInput">Phone Number</label>
+                        <input type="phone-number" class="form-control" id="phoneNumberInput" placeholder="555-123-4567">
+                    </div>
+                    <button type="submit" class="btn btn-secondary">Submit</button>
+                </form>
             </div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Invite</th>
-                    </tr>
-                </thead>
-                <tbody id="trainSchedule">
+        
+        </div>
+        </div>
+        <div class="col-12 col-md-8">
+        <div class="card">
+            <h5 class="card-header">Contact List</h5>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Invite</th>
+                        </tr>
+                    </thead>
+                    <tbody id="contactList">
                     <!-- <div class="form-check">
                         <input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
                       </div> -->
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
             <br/>
-            <button type="button" class="btn btn-secondary">Submit</button>
+            <button type="button" class="btn btn-secondary">Send Invite</button>
+        </div>
+        </div>
         </div>
 
 
