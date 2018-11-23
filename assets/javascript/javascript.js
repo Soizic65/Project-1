@@ -1,17 +1,17 @@
-
 var config = {
     apiKey: "AIzaSyAtoXNi11pzQhYSe5zMOQvM5BfPb0xRfYs",
     authDomain: "brewery-crawl-ccd46.firebaseapp.com",
-    databaseURL: "https://Brewery-Crawl.firebaseio.com",
+    databaseURL: "https://brewery-crawl-ccd46.firebaseio.com",
     projectId: "brewery-crawl-ccd46",
-    storageBucket: "<BUCKET>.appspot.com",
-    messagingSenderId: "322173165333",
-  };
+    storageBucket: "brewery-crawl-ccd46.appspot.com",
+    messagingSenderId: "322173165333"
+};
 firebase.initializeApp(config);
 
 var database = firebase.database();
+var ref = database.ref('contacts')
 
-$(document).ready(function() {
+
 
 
 $("#searchBtn").on("click", function () {
@@ -28,8 +28,8 @@ $("#searchBtn").on("click", function () {
 
         console.log(response)
 
-        response.forEach(function(theBreweries) {
-            if(theBreweries.street === "") {
+        response.forEach(function (theBreweries) {
+            if (theBreweries.street === "") {
                 theBreweries.street = "Unavailable"
             }
         })
@@ -50,7 +50,7 @@ $("#searchBtn").on("click", function () {
             </table>
         `)
 
-        response.forEach(function(eachBrewery) {
+        response.forEach(function (eachBrewery) {
             var breweryName = eachBrewery.name
             var breweryLocation = eachBrewery.street
 
@@ -67,73 +67,80 @@ $("#searchBtn").on("click", function () {
 
 
     })
-  
 
-
-})
-
-$("#theForm").submit(function() {
-    $("#searchBtn").click()
-    return false
 })
 
 // This is the Twilio portion of our javascript
-// Send a SMS when button is clicked!
+
+function clearPersonalInput() {
+    $("#nameInput").val("");
+    $("#phoneNumberInput").val("");
+}
+
+$(document).ready(function () {
+
+    $("#submitPersonalInfo").on("click", function (event) {
+        let name = $("#nameInput").val().trim();
+        let number = $("#phoneNumberInput").val().trim();
+        let correctedNumber = number
+            .replace(/[^0-9]/g, '');
+
+        var userInfo = {
+            name: name,
+            correctedNumber: correctedNumber,
+        }
 
 
+        ref.push(userInfo)
+        clearPersonalInput();
 
+    });
+    console.log()
 
+    // Appending info from Firebase to the table
 
+    database.ref('contacts').on("child_added", function (childSnapshot) {
+        let name = childSnapshot.val().name
+        $(`
+        <tr>
+            <td scope="row">${name}</td>
+        `).appendTo('#contactList')
+    })
 
-    // function clear() {
-    //     $("").val("");
-    //     $("").val("");
-    // }
+    // Send a SMS when button is clicked!
 
-    // $("#submit-btn").on("click", function(event) {
+    const message = "Hey meet us at "
 
-    //  let name = $("inputName").val().trim();
-    //  let number = $("inputNumber").val().trim();
+    $("#submitSendSMS").click(function () {
 
-    //  const userInfo = {
-    //      name: name,
-    //      number: number,
-    //  }
-
-    //  database.ref().push(userInfo)
-    //  clear();
-
-    // });
-
-  
-    // Make var that will take the name and have the name 
-    // hold the value of number and pull from Firebase  
-
-
-
-    $("#textBtn").click(function() {
-        
         const SID = "ACde7d929d4b9b0f7e32b6f0f553fe9667"
         const Key = "41cdc646ad2521c5e86216b3b17dca1b"
+        database.ref('contacts').once('value', function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
+                var childKey = childSnapshot.key;
+                var childData = childSnapshot.val();
+                let name = childSnapshot.val().correctedNumber;
+                console.log(name);
 
-        $.ajax({
-            type: 'POST',
-            url: 'https://api.twilio.com/2010-04-01/Accounts/' + SID + '/Messages.json',
-            data: {
-                "To" : "+16025494594",
-                "From" : "+19562671699",
-                "Body" : "I can see you"
-            },
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader ("Authorization", "Basic " + btoa(SID + ':' + Key));
-            },
-            success: function(data) {
-                console.log(data);
-            },
-            error: function(data) {
-                console.log(data);
-            }
+                $.ajax({
+                    type: 'POST',
+                    url: 'https://api.twilio.com/2010-04-01/Accounts/' + SID + '/Messages.json',
+                    data: {
+                        "To": "+1" + name,
+                        "From": "+19562671699",
+                        "Body": message,
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Authorization", "Basic " + btoa(SID + ':' + Key));
+                    },
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+            });
         });
     });
 });
-
