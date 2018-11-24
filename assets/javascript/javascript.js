@@ -25,11 +25,8 @@ $("#searchBtn").on("click", function () {
         method: "GET",
     }).then(function (response) {
 
-
-        console.log(response)
-
-        response.forEach(function (theBreweries) {
-            if (theBreweries.street === "") {
+        response.forEach(function(theBreweries) {
+            if(theBreweries.street === "") {
                 theBreweries.street = "Unavailable"
             }
         })
@@ -48,6 +45,13 @@ $("#searchBtn").on("click", function () {
 
 
             </table>
+            
+            <script>
+                function breweryChoice(name, location) {
+                    database.ref().child("brewery/name").set(name)
+                    database.ref().child("brewery/location").set(location)
+                }
+            </script>
         `)
 
         response.forEach(function (eachBrewery) {
@@ -55,16 +59,15 @@ $("#searchBtn").on("click", function () {
             var breweryLocation = eachBrewery.street
 
             $("#theBody").append(`
-                <tr>
-                    <td>${breweryName}</td>
-                    <td>${breweryLocation}</td>
+                <tr onClick="breweryChoice('${breweryName}', '${breweryLocation}')">
+                    <td><a href='contact.html'>${breweryName}</a></td>
+                    <td><a href='contact.html'>${breweryLocation}</a></td>
                 </tr>
             `)
-
+                
         })
 
         console.log(response);
-
 
     })
 
