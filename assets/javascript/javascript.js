@@ -81,10 +81,14 @@ $(document).ready(function () {
         let number = $("#phoneNumberInput").val().trim();
         let correctedNumber = number
             .replace(/[^0-9]/g, '');
+        let frequency = $('#').val().trim();
+        let correctedFrequency = frequency
+            .replace(/[^0-9]/g, '');
 
         var userInfo = {
             name: name,
             correctedNumber: correctedNumber,
+            correctedFrequency: correctedFrequency,
         }
 
 
