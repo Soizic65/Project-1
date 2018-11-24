@@ -11,9 +11,6 @@ firebase.initializeApp(config);
 var database = firebase.database();
 var ref = database.ref('contacts')
 
-
-
-
 $("#searchBtn").on("click", function () {
     $("#breweryList").empty()
     var theCity = $("#cityInput").val().toLowerCase()
@@ -111,11 +108,15 @@ $(document).ready(function () {
 
     const message = "Hey meet us at "
 
+    // This code is for time till event
+    let frequency = $('').val().trim();
+    
+
     $("#submitSendSMS").click(function () {
 
         const SID = "ACde7d929d4b9b0f7e32b6f0f553fe9667"
         const Key = "41cdc646ad2521c5e86216b3b17dca1b"
-        database.ref('contacts').once('value', function (snapshot) {
+        database.ref('contacts').once('value', function (snapshot){
             snapshot.forEach(function (childSnapshot) {
                 var childKey = childSnapshot.key;
                 var childData = childSnapshot.val();
