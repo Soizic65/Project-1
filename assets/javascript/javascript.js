@@ -94,13 +94,11 @@ $(document).ready(function () {
             correctedNumber: correctedNumber,
             // correctedFrequency: correctedFrequency,
         }
-
-        var time = {
+        timeRef.set({
             showTime: confirmedTime,
-        }
+        })
 
         ref.push(userInfo)
-        timeRef.push(time)
         clearPersonalInput();
 
     });
@@ -122,76 +120,74 @@ $(document).ready(function () {
 
     // Creating the message to be sent
 
-    database.ref('time').once('value', function (snapshot) {
-        snapshot.forEach(function (childSnapshot) {
-            let timeChosen = childSnapshot.val().showTime
-            console.log(timeChosen)
+    timeRef.on('value', function (snapshot) {
+        let timeChosen = snapshot.val().showTime
+        console.log(timeChosen)
 
-            database.ref('brewery').once('value', function (childSnapshot) {
-                let breweryChosen = childSnapshot.val().name
-                let breweryChosenLocation = childSnapshot.val().location
-                console.log(breweryChosen)
-                console.log(breweryChosenLocation)
-                const message = "Hey, we're going to " + breweryChosen + " which is at: " + breweryChosenLocation + ". We will be meeting there at: " + timeChosen;
-                console.log(message)
-            })
+
+        database.ref('brewery').once('value', function (childSnapshot) {
+            let breweryChosen = childSnapshot.val().name
+            let breweryChosenLocation = childSnapshot.val().location
+            console.log(breweryChosen)
+            console.log(breweryChosenLocation)
+            const message = "Hey, we're going to " + breweryChosen + " which is at: " + breweryChosenLocation + ". We will be meeting there at: " + timeChosen;
+            console.log(message)
         })
     })
 
 
-    // This code is for time till event
-    // let frequency = $('').val().trim();
 
-    // Send a SMS when button is clicked!
+// This code is for time till event
+// let frequency = $('').val().trim();
 
-    $("#submitSendSMS").click(function () {
+// Send a SMS when button is clicked!
 
-        database.ref('time').once('value', function (snapshot) {
-            snapshot.forEach(function (childSnapshot) {
-                let timeChosen = childSnapshot.val().showTime
-                console.log(timeChosen)
+$("#submitSendSMS").click(function () {
 
-                database.ref('brewery').once('value', function (childSnapshot) {
-                    let breweryChosen = childSnapshot.val().name
-                    let breweryChosenLocation = childSnapshot.val().location
-                    console.log(breweryChosen)
-                    console.log(breweryChosenLocation)
-                    const message = "Hey, we're going to " + breweryChosen + " which is at: " + breweryChosenLocation + ". We will be meeting there at: " + timeChosen;
-                    console.log(message)
+    timeRef.on('value', function (snapshot) {
+        let timeChosen = snapshot.val().showTime
+        console.log(timeChosen)
+
+        database.ref('brewery').once('value', function (childSnapshot) {
+            let breweryChosen = childSnapshot.val().name
+            let breweryChosenLocation = childSnapshot.val().location
+            console.log(breweryChosen)
+            console.log(breweryChosenLocation)
+            const message = "Hey, we're going to " + breweryChosen + " which is at: " + breweryChosenLocation + ". We will be meeting there at: " + timeChosen;
+            console.log(message)
 
 
-                    const SID = "ACde7d929d4b9b0f7e32b6f0f553fe9667"
-                    const Key = "41cdc646ad2521c5e86216b3b17dca1b"
-                    database.ref('contacts').once('value', function (snapshot) {
-                        snapshot.forEach(function (childSnapshot) {
-                            var childKey = childSnapshot.key;
-                            var childData = childSnapshot.val();
-                            let name = childSnapshot.val().correctedNumber;
-                            console.log(name);
-                            console.log(childKey);
+            const SID = "ACde7d929d4b9b0f7e32b6f0f553fe9667"
+            const Key = "41cdc646ad2521c5e86216b3b17dca1b"
+            database.ref('contacts').once('value', function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    var childKey = childSnapshot.key;
+                    var childData = childSnapshot.val();
+                    let name = childSnapshot.val().correctedNumber;
+                    console.log(name);
+                    console.log(childKey);
 
-                            $.ajax({
-                                type: 'POST',
-                                url: 'https://api.twilio.com/2010-04-01/Accounts/' + SID + '/Messages.json',
-                                data: {
-                                    "To": "+1" + name,
-                                    "From": "+19562671699",
-                                    "Body": message,
-                                },
-                                beforeSend: function (xhr) {
-                                    xhr.setRequestHeader("Authorization", "Basic " + btoa(SID + ':' + Key));
-                                },
-                                success: function (data) {
-                                    console.log(data);
-                                },
-                                error: function (data) {
-                                    console.log(data);
-                                }
-                            })
-                        })
+                    $.ajax({
+                        type: 'POST',
+                        url: 'https://api.twilio.com/2010-04-01/Accounts/' + SID + '/Messages.json',
+                        data: {
+                            "To": "+1" + name,
+                            "From": "+19562671699",
+                            "Body": message,
+                        },
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader("Authorization", "Basic " + btoa(SID + ':' + Key));
+                        },
+                        success: function (data) {
+                            console.log(data);
+                        },
+                        error: function (data) {
+                            console.log(data);
+                        }
                     })
-                });
-            });
+                })
+            })
         });
     });
+});
 });
