@@ -74,21 +74,21 @@ function clearPersonalInput() {
     $("#phoneNumberInput").val("");
 }
 
-$(document).ready(function () {
+$(document).ready(function() {
 
     $("#submitPersonalInfo").on("click", function (event) {
         let name = $("#nameInput").val().trim();
         let number = $("#phoneNumberInput").val().trim();
         let correctedNumber = number
             .replace(/[^0-9]/g, '');
-        let frequency = $('#').val().trim();
-        let correctedFrequency = frequency
-            .replace(/[^0-9]/g, '');
+        // let frequency = $('#').val().trim();
+        // let correctedFrequency = frequency
+        //     .replace(/[^0-9]/g, '');
 
         var userInfo = {
             name: name,
             correctedNumber: correctedNumber,
-            correctedFrequency: correctedFrequency,
+            // correctedFrequency: correctedFrequency,
         }
 
 
@@ -96,55 +96,72 @@ $(document).ready(function () {
         clearPersonalInput();
 
     });
-    console.log()
+    
 
     // Appending info from Firebase to the table
 
-    database.ref('contacts').on("child_added", function (childSnapshot) {
+    // var indexNum = this.childSnapshot.val().name;
+    // console.log(indexNum);
+
+    database.ref('contacts').on("child_added", function(childSnapshot) {
         let name = childSnapshot.val().name
+        let dataKey = childSnapshot.val().name.key
         $(`
         <tr>
             <td scope="row">${name}</td>
         `).appendTo('#contactList')
     })
 
+
+
+    // Removing user from list
+    // $('#removeUser').click(function() {
+    //     database.ref('contacts').once('value', function(snapshot) {
+                   
+    //         })
+
+    // });
+
+
+
     // Send a SMS when button is clicked!
 
     const message = "Hey meet us at "
 
     // This code is for time till event
-    let frequency = $('').val().trim();
-    
+    // let frequency = $('').val().trim();
 
-    $("#submitSendSMS").click(function () {
+
+    $("#submitSendSMS").click(function() {
 
         const SID = "ACde7d929d4b9b0f7e32b6f0f553fe9667"
         const Key = "41cdc646ad2521c5e86216b3b17dca1b"
-        database.ref('contacts').once('value', function (snapshot){
+        database.ref('contacts').once('value', function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
                 var childKey = childSnapshot.key;
                 var childData = childSnapshot.val();
                 let name = childSnapshot.val().correctedNumber;
                 console.log(name);
+                console.log(childKey);
 
-                $.ajax({
-                    type: 'POST',
-                    url: 'https://api.twilio.com/2010-04-01/Accounts/' + SID + '/Messages.json',
-                    data: {
-                        "To": "+1" + name,
-                        "From": "+19562671699",
-                        "Body": message,
-                    },
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader("Authorization", "Basic " + btoa(SID + ':' + Key));
-                    },
-                    success: function (data) {
-                        console.log(data);
-                    },
-                    error: function (data) {
-                        console.log(data);
-                    }
-                });
+                // $.ajax({
+                //     type: 'POST',
+                //     url: 'https://api.twilio.com/2010-04-01/Accounts/' + SID + '/Messages.json',
+                //     data: {
+                //         "To": "+1" + name,
+                //         "From": "+19562671699",
+                //         "Body": message,
+                //     },
+                //     beforeSend: function (xhr) {
+                //         xhr.setRequestHeader("Authorization", "Basic " + btoa(SID + ':' + Key));
+                //     },
+                //     success: function (data) {
+                //         console.log(data);
+                //     },
+                //     error: function (data) {
+                //         console.log(data);
+                //     }
+                // });
             });
         });
     });
