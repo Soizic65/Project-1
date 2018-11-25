@@ -10,6 +10,7 @@ firebase.initializeApp(config);
 
 var database = firebase.database();
 var ref = database.ref('contacts')
+var timeRef = database.ref('time')
 
 $("#searchBtn").on("click", function () {
     $("#breweryList").empty()
@@ -21,9 +22,6 @@ $("#searchBtn").on("click", function () {
         url: queryURL,
         method: "GET",
     }).then(function (response) {
-
-
-        console.log(response)
 
         response.forEach(function (theBreweries) {
             if (theBreweries.street === "") {
@@ -40,11 +38,15 @@ $("#searchBtn").on("click", function () {
                     </tr>
                 </thead>
                 <tbody id='theBody'>
-
                 </tbody>
-
-
             </table>
+            
+            <script>
+                function breweryChoice(name, location) {
+                    database.ref().child("brewery/name").set(name)
+                    database.ref().child("brewery/location").set(location)
+                }
+            </script>
         `)
 
         response.forEach(function (eachBrewery) {
@@ -52,9 +54,9 @@ $("#searchBtn").on("click", function () {
             var breweryLocation = eachBrewery.street
 
             $("#theBody").append(`
-                <tr>
-                    <td>${breweryName}</td>
-                    <td>${breweryLocation}</td>
+                <tr onClick="breweryChoice('${breweryName}', '${breweryLocation}')">
+                    <td><a href='contact.html'>${breweryName}</a></td>
+                    <td><a href='contact.html'>${breweryLocation}</a></td>
                 </tr>
             `)
 
@@ -74,11 +76,13 @@ function clearPersonalInput() {
     $("#phoneNumberInput").val("");
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
 
     $("#submitPersonalInfo").on("click", function (event) {
         let name = $("#nameInput").val().trim();
         let number = $("#phoneNumberInput").val().trim();
+        let confirmedTime = $('#confirmedTime').val().trim()
+            .replace(/[^0-9 am pm]/g, '');
         let correctedNumber = number
             .replace(/[^0-9]/g, '');
         // let frequency = $('#').val().trim();
@@ -91,19 +95,23 @@ $(document).ready(function() {
             // correctedFrequency: correctedFrequency,
         }
 
+        var time = {
+            showTime: confirmedTime,
+        }
 
         ref.push(userInfo)
+        timeRef.push(time)
         clearPersonalInput();
 
     });
-    
+
 
     // Appending info from Firebase to the table
 
     // var indexNum = this.childSnapshot.val().name;
     // console.log(indexNum);
 
-    database.ref('contacts').on("child_added", function(childSnapshot) {
+    database.ref('contacts').on("child_added", function (childSnapshot) {
         let name = childSnapshot.val().name
         let dataKey = childSnapshot.val().name.key
         $(`
@@ -112,56 +120,77 @@ $(document).ready(function() {
         `).appendTo('#contactList')
     })
 
+    // Creating the message to be sent
 
+    database.ref('time').once('value', function (snapshot) {
+        snapshot.forEach(function (childSnapshot) {
+            let timeChosen = childSnapshot.val().showTime
+            console.log(timeChosen)
 
-    // Removing user from list
-    // $('#removeUser').click(function() {
-    //     database.ref('contacts').once('value', function(snapshot) {
-                   
-    //         })
+            database.ref('brewery').once('value', function (childSnapshot) {
+                let breweryChosen = childSnapshot.val().name
+                let breweryChosenLocation = childSnapshot.val().location
+                console.log(breweryChosen)
+                console.log(breweryChosenLocation)
+                const message = "Hey, we're going to " + breweryChosen + " which is at: " + breweryChosenLocation + ". We will be meeting there at: " + timeChosen;
+                console.log(message)
+            })
+        })
+    })
 
-    // });
-
-
-
-    // Send a SMS when button is clicked!
-
-    const message = "Hey meet us at "
 
     // This code is for time till event
     // let frequency = $('').val().trim();
 
+    // Send a SMS when button is clicked!
 
-    $("#submitSendSMS").click(function() {
+    $("#submitSendSMS").click(function () {
 
-        const SID = "ACde7d929d4b9b0f7e32b6f0f553fe9667"
-        const Key = "41cdc646ad2521c5e86216b3b17dca1b"
-        database.ref('contacts').once('value', function (snapshot) {
+        database.ref('time').once('value', function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
-                var childKey = childSnapshot.key;
-                var childData = childSnapshot.val();
-                let name = childSnapshot.val().correctedNumber;
-                console.log(name);
-                console.log(childKey);
+                let timeChosen = childSnapshot.val().showTime
+                console.log(timeChosen)
 
-                // $.ajax({
-                //     type: 'POST',
-                //     url: 'https://api.twilio.com/2010-04-01/Accounts/' + SID + '/Messages.json',
-                //     data: {
-                //         "To": "+1" + name,
-                //         "From": "+19562671699",
-                //         "Body": message,
-                //     },
-                //     beforeSend: function (xhr) {
-                //         xhr.setRequestHeader("Authorization", "Basic " + btoa(SID + ':' + Key));
-                //     },
-                //     success: function (data) {
-                //         console.log(data);
-                //     },
-                //     error: function (data) {
-                //         console.log(data);
-                //     }
-                // });
+                database.ref('brewery').once('value', function (childSnapshot) {
+                    let breweryChosen = childSnapshot.val().name
+                    let breweryChosenLocation = childSnapshot.val().location
+                    console.log(breweryChosen)
+                    console.log(breweryChosenLocation)
+                    const message = "Hey, we're going to " + breweryChosen + " which is at: " + breweryChosenLocation + ". We will be meeting there at: " + timeChosen;
+                    console.log(message)
+
+
+                    const SID = "ACde7d929d4b9b0f7e32b6f0f553fe9667"
+                    const Key = "41cdc646ad2521c5e86216b3b17dca1b"
+                    database.ref('contacts').once('value', function (snapshot) {
+                        snapshot.forEach(function (childSnapshot) {
+                            var childKey = childSnapshot.key;
+                            var childData = childSnapshot.val();
+                            let name = childSnapshot.val().correctedNumber;
+                            console.log(name);
+                            console.log(childKey);
+
+                            $.ajax({
+                                type: 'POST',
+                                url: 'https://api.twilio.com/2010-04-01/Accounts/' + SID + '/Messages.json',
+                                data: {
+                                    "To": "+1" + name,
+                                    "From": "+19562671699",
+                                    "Body": message,
+                                },
+                                beforeSend: function (xhr) {
+                                    xhr.setRequestHeader("Authorization", "Basic " + btoa(SID + ':' + Key));
+                                },
+                                success: function (data) {
+                                    console.log(data);
+                                },
+                                error: function (data) {
+                                    console.log(data);
+                                }
+                            })
+                        })
+                    })
+                });
             });
         });
     });
