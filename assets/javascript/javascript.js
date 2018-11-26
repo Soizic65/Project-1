@@ -10,9 +10,7 @@ firebase.initializeApp(config);
 
 var database = firebase.database();
 var ref = database.ref('contacts')
-
-
-
+var timeRef = database.ref('time')
 
 $("#searchBtn").on("click", function () {
     $("#breweryList").empty()
@@ -25,8 +23,8 @@ $("#searchBtn").on("click", function () {
         method: "GET",
     }).then(function (response) {
 
-        response.forEach(function(theBreweries) {
-            if(theBreweries.street === "") {
+        response.forEach(function (theBreweries) {
+            if (theBreweries.street === "") {
                 theBreweries.street = "Unavailable"
             }
         })
@@ -40,10 +38,7 @@ $("#searchBtn").on("click", function () {
                     </tr>
                 </thead>
                 <tbody id='theBody'>
-
                 </tbody>
-
-
             </table>
             
             <script>
@@ -64,10 +59,11 @@ $("#searchBtn").on("click", function () {
                     <td><a href='contact.html'>${breweryLocation}</a></td>
                 </tr>
             `)
-                
+
         })
 
         console.log(response);
+
 
     })
 
@@ -85,65 +81,113 @@ $(document).ready(function () {
     $("#submitPersonalInfo").on("click", function (event) {
         let name = $("#nameInput").val().trim();
         let number = $("#phoneNumberInput").val().trim();
+        let confirmedTime = $('#confirmedTime').val().trim()
+            .replace(/[^0-9 am pm]/g, '');
         let correctedNumber = number
             .replace(/[^0-9]/g, '');
+        // let frequency = $('#').val().trim();
+        // let correctedFrequency = frequency
+        //     .replace(/[^0-9]/g, '');
 
         var userInfo = {
             name: name,
             correctedNumber: correctedNumber,
+            // correctedFrequency: correctedFrequency,
         }
-
+        timeRef.set({
+            showTime: confirmedTime,
+        })
 
         ref.push(userInfo)
         clearPersonalInput();
 
     });
-    console.log()
+
 
     // Appending info from Firebase to the table
 
+    // var indexNum = this.childSnapshot.val().name;
+    // console.log(indexNum);
+
     database.ref('contacts').on("child_added", function (childSnapshot) {
         let name = childSnapshot.val().name
+        let dataKey = childSnapshot.val().name.key
         $(`
         <tr>
             <td scope="row">${name}</td>
         `).appendTo('#contactList')
     })
 
-    // Send a SMS when button is clicked!
+    // Creating the message to be sent
 
-    const message = "Hey meet us at "
+    timeRef.on('value', function (snapshot) {
+        let timeChosen = snapshot.val().showTime
+        console.log(timeChosen)
 
-    $("#submitSendSMS").click(function () {
 
-        const SID = "ACde7d929d4b9b0f7e32b6f0f553fe9667"
-        const Key = "41cdc646ad2521c5e86216b3b17dca1b"
-        database.ref('contacts').once('value', function (snapshot) {
-            snapshot.forEach(function (childSnapshot) {
-                var childKey = childSnapshot.key;
-                var childData = childSnapshot.val();
-                let name = childSnapshot.val().correctedNumber;
-                console.log(name);
+        database.ref('brewery').once('value', function (childSnapshot) {
+            let breweryChosen = childSnapshot.val().name
+            let breweryChosenLocation = childSnapshot.val().location
+            console.log(breweryChosen)
+            console.log(breweryChosenLocation)
+            const message = "Hey, we're going to " + breweryChosen + " which is at: " + breweryChosenLocation + ". We will be meeting there at: " + timeChosen;
+            console.log(message)
+        })
+    })
 
-                $.ajax({
-                    type: 'POST',
-                    url: 'https://api.twilio.com/2010-04-01/Accounts/' + SID + '/Messages.json',
-                    data: {
-                        "To": "+1" + name,
-                        "From": "+19562671699",
-                        "Body": message,
-                    },
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader("Authorization", "Basic " + btoa(SID + ':' + Key));
-                    },
-                    success: function (data) {
-                        console.log(data);
-                    },
-                    error: function (data) {
-                        console.log(data);
-                    }
-                });
-            });
+
+
+// This code is for time till event
+// let frequency = $('').val().trim();
+
+// Send a SMS when button is clicked!
+
+$("#submitSendSMS").click(function () {
+
+    timeRef.on('value', function (snapshot) {
+        let timeChosen = snapshot.val().showTime
+        console.log(timeChosen)
+
+        database.ref('brewery').once('value', function (childSnapshot) {
+            let breweryChosen = childSnapshot.val().name
+            let breweryChosenLocation = childSnapshot.val().location
+            console.log(breweryChosen)
+            console.log(breweryChosenLocation)
+            const message = "Hey, we're going to " + breweryChosen + " which is at: " + breweryChosenLocation + ". We will be meeting there at: " + timeChosen;
+            console.log(message)
+
+
+            const SID = "ACde7d929d4b9b0f7e32b6f0f553fe9667"
+            const Key = "41cdc646ad2521c5e86216b3b17dca1b"
+            database.ref('contacts').once('value', function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    var childKey = childSnapshot.key;
+                    var childData = childSnapshot.val();
+                    let name = childSnapshot.val().correctedNumber;
+                    console.log(name);
+                    console.log(childKey);
+
+                    $.ajax({
+                        type: 'POST',
+                        url: 'https://api.twilio.com/2010-04-01/Accounts/' + SID + '/Messages.json',
+                        data: {
+                            "To": "+1" + name,
+                            "From": "+19562671699",
+                            "Body": message,
+                        },
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader("Authorization", "Basic " + btoa(SID + ':' + Key));
+                        },
+                        success: function (data) {
+                            console.log(data);
+                        },
+                        error: function (data) {
+                            console.log(data);
+                        }
+                    })
+                })
+            })
         });
     });
+});
 });
