@@ -15,24 +15,13 @@ body{
     background-repeat: no-repeat;
     margin:0;
 }
-#city{
-    font-size:30px;
-    color:white;
-}
-#searchBtn{
-    height:60px;
-    
-}
-#cityInput{
-    line-height:50px;
-    width:100%;
-}
 
-form{
+.form{
     display: inline-block;
     margin-left: auto;
     margin-right: auto;
     text-align: left;
+    padding: 10px;
 }
 
 #cityForm{
@@ -60,11 +49,13 @@ form{
     padding:15px;
 }
 
-#submitBtn {
-
-}
     
 .card {
     margin: 10px;
+  padding: 10px;
 }
 
+
+#firstPageBody {
+    width: 90%;
+}
