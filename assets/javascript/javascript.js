@@ -85,14 +85,11 @@ $(document).ready(function () {
             .replace(/[^0-9 am pm]/g, '');
         let correctedNumber = number
             .replace(/[^0-9]/g, '');
-        // let frequency = $('#').val().trim();
-        // let correctedFrequency = frequency
-        //     .replace(/[^0-9]/g, '');
 
         var userInfo = {
             name: name,
             correctedNumber: correctedNumber,
-            // correctedFrequency: correctedFrequency,
+        
         }
         timeRef.set({
             showTime: confirmedTime,
@@ -105,9 +102,6 @@ $(document).ready(function () {
 
 
     // Appending info from Firebase to the table
-
-    // var indexNum = this.childSnapshot.val().name;
-    // console.log(indexNum);
 
     database.ref('contacts').on("child_added", function (childSnapshot) {
         let name = childSnapshot.val().name
@@ -135,11 +129,6 @@ $(document).ready(function () {
         })
     })
 
-
-
-// This code is for time till event
-// let frequency = $('').val().trim();
-
 // Send a SMS when button is clicked!
 
 $("#submitSendSMS").click(function () {
@@ -161,11 +150,7 @@ $("#submitSendSMS").click(function () {
             const Key = "41cdc646ad2521c5e86216b3b17dca1b"
             database.ref('contacts').once('value', function (snapshot) {
                 snapshot.forEach(function (childSnapshot) {
-                    var childKey = childSnapshot.key;
-                    var childData = childSnapshot.val();
                     let name = childSnapshot.val().correctedNumber;
-                    console.log(name);
-                    console.log(childKey);
 
                     $.ajax({
                         type: 'POST',
