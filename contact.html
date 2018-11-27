@@ -16,19 +16,21 @@
     <div class="container">
         <div class="jumbotron">
             <h1 class="display-4" id="quote">"Wish you were beer.."</h1>
-            <div class="text-right">
-                <div class="dropdown">
-                    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        Search
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Plan Page</a>
+        </div>
+    </div>
+        <div class="card">
+            <h5 class="card-header">Brewery Selected</h5>
+            <div class="card-body">
+                <table class="table">
+                    <tbody id="brewerySelected">
 
-                    </div>
-                </div>
+                    </tbody>
+                </table>
+            </br>
+            <a class="btn btn-secondary" href="index.html" role="button">Return to Search Results</a>
             </div>
         </div>
+
 
         <div class="row">
         <div class="col-6 col-md-4">
@@ -80,7 +82,6 @@
         </div>
         </div>
         </div>
-
 
     <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
