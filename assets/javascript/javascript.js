@@ -12,6 +12,35 @@ var database = firebase.database();
 var ref = database.ref('contacts')
 var timeRef = database.ref('time')
 
+
+
+    
+var theBrewery = "Dry River Brewing"
+
+// var platform = new H.service.Platform({
+//     app_id: 'NjkFyMmOTiHhn4wGczXu',
+//     app_code: 'Xv-d8tKUWNWV76K41PAMEQ'
+//   });
+  
+//   var search = new H.places.Search(platform.getPlacesService()),
+//     searchResult, error;
+  
+//   var params = {
+
+//     'q': theBrewery,
+//     'at': '37.7942,-122.4070'
+//   };
+  
+//   function onResult(data) {
+//     searchResult = data;
+//   }
+  
+//   function onError(data) {
+//     error = data;
+//   }
+  
+//   search.request(params, {}, onResult, onError);
+
 $("#searchBtn").on("click", function () {
     $("#breweryList").empty()
     var theCity = $("#cityInput").val().toLowerCase()

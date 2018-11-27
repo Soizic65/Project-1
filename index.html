@@ -10,7 +10,10 @@
         crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/style.css" type="text/css">
-    
+    <meta name="viewport" content="initial-scale=1.0, 
+    width=device-width" />
+    <script src="http://js.api.here.com/v3/3.0/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
+    <script src="http://js.api.here.com/v3/3.0/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
 </head>
 
 <body>
@@ -21,31 +24,31 @@
         </div>
     </div>
 
-        <div class="container" id="firstPageBody">
+    <div class="container" id="firstPageBody">
 
-                    <div class="card">
-                        <h5 class="card-header">Find A Brewery!</h5>
-                        <div class="card-body">
-                        <form>
-                            <input type="text" id="cityInput" placeholder="Search by City">
-                        </br>
-                        </br>
-                            <button type="button" class="btn btn-secondary" id="searchBtn">
-                                <i class="fa fa-beer" aria-hidden="true"></i>
-                                 Search
-                            </button>
-                        </form>
-                        </div>
-                    </div>
-        </div>
-        <div class="container" id="firstPageBody">
-
-            <div class="row">
-                <div class="col-md-12 text-center" id="breweryList">
-                </div>
-
+        <div class="card">
+            <h5 class="card-header">Find A Brewery!</h5>
+            <div class="card-body">
+                <form>
+                    <input type="text" id="cityInput" placeholder="Search by City">
+                    </br>
+                    </br>
+                    <button type="button" class="btn btn-secondary" id="searchBtn">
+                        <i class="fa fa-beer" aria-hidden="true"></i>
+                        Search
+                    </button>
+                </form>
             </div>
         </div>
+    </div>
+    <div class="container" id="firstPageBody">
+
+        <div class="row">
+            <div class="col-md-12 text-center" id="breweryList">
+            </div>
+
+        </div>
+    </div>
 
     <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
