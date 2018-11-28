@@ -122,11 +122,13 @@ $(document).ready(function () {
 
     })
 
-    $('.removeUser').on('click', function(event) {
-        const key = $(this).attr('data-key')
-         ref.child(key).remove()
-         reload()
-     })
+    // Remove button 
+
+    // $('.removeUser').on('click', function(event) {
+    //     const key = $(this).attr('data-key')
+    //      ref.child(key).remove()
+    //      reload()
+    //  })
 
     database.ref('brewery').once('value', function (childSnapshot) {
         let breweryChosen = childSnapshot.val().name
