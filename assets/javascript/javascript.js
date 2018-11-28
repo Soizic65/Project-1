@@ -91,7 +91,6 @@ $(document).ready(function () {
         let correctedNumber = number
             .replace(/[^0-9]/g, '');
 
-
         var userInfo = {
             name: name,
             correctedNumber: correctedNumber,
@@ -108,7 +107,6 @@ $(document).ready(function () {
 
 
     // Appending info from Firebase to the table
-
 
     database.ref('contacts').on("child_added", function (childSnapshot) {
         let name = childSnapshot.val().name
@@ -133,6 +131,7 @@ $(document).ready(function () {
         reload()
     })
 
+
     database.ref('brewery').once('value', function (childSnapshot) {
         let breweryChosen = childSnapshot.val().name
         $(`
@@ -148,6 +147,8 @@ $(document).ready(function () {
         `).appendTo('#brewerySelected')
     })
 
+
+// Send a SMS when button is clicked!
 
 
     // Creating the message to be sent
@@ -206,6 +207,33 @@ $(document).ready(function () {
                                 console.log(data);
                             }
                         })
+
+            console.log(message)
+
+
+            const SID = "ACde7d929d4b9b0f7e32b6f0f553fe9667"
+            const Key = "41cdc646ad2521c5e86216b3b17dca1b"
+            database.ref('contacts').once('value', function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    let name = childSnapshot.val().correctedNumber;
+
+                    $.ajax({
+                        type: 'POST',
+                        url: 'https://api.twilio.com/2010-04-01/Accounts/' + SID + '/Messages.json',
+                        data: {
+                            "To": "+1" + name,
+                            "From": "+19562671699",
+                            "Body": message,
+                        },
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader("Authorization", "Basic " + btoa(SID + ':' + Key));
+                        },
+                        success: function (data) {
+                            console.log(data);
+                        },
+                        error: function (data) {
+                            console.log(data);
+                        }
                     })
                 })
             });
