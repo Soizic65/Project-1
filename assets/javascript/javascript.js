@@ -162,18 +162,21 @@ $(document).ready(function () {
         $(`
         <tr>
             <td scope="row">${name}</td>
-            <td><button type="button" class="btn btn-secondary removeUser" data-key="${dataKey}">Remove</button></td>
+            <td>
+                <button type="button" class="btn btn-secondary removeUser" data-key="${dataKey}">
+                Remove</button>
+            </td>
         `).appendTo('#contactList')
 
     })
 
     // Remove button 
 
-    // $('.removeUser').on('click', function(event) {
-    //     const key = $(this).attr('data-key')
-    //      ref.child(key).remove()
-    //      reload()
-    //  })
+    $('#contactList').on('click', '.removeUser', function (event) {
+        const key = $(this).attr('data-key')
+        ref.child(key).remove()
+        reload()
+    })
 
     database.ref('brewery').once('value', function (childSnapshot) {
         let breweryChosen = childSnapshot.val().name
@@ -207,7 +210,6 @@ $(document).ready(function () {
             let breweryChosenLocation = childSnapshot.val().location
             const message = "Hey, we're going to " + breweryChosen + " which is at: " + breweryChosenLocation + ". We will be meeting there at: " + timeChosen;
 
-           
         })
     })
 
@@ -222,8 +224,6 @@ $(document).ready(function () {
             database.ref('brewery').once('value', function (childSnapshot) {
                 let breweryChosen = childSnapshot.val().name
                 let breweryChosenLocation = childSnapshot.val().location
-                console.log(breweryChosen)
-                console.log(breweryChosenLocation)
                 const message = "Hey, we're going to " + breweryChosen + " which is at: " + breweryChosenLocation + ". We will be meeting there at: " + timeChosen;
                 console.log(message)
 
