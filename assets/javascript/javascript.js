@@ -16,6 +16,44 @@ function reload() {
     location.reload();
 };
 
+
+    
+var theBrewery = "SanTan Brewing Co"
+
+var platform = new H.service.Platform({
+    app_id: 'NjkFyMmOTiHhn4wGczXu',
+    app_code: 'Xv-d8tKUWNWV76K41PAMEQ'
+  });
+  
+  var search = new H.places.Search(platform.getPlacesService()),
+    searchResult, error;
+  
+  var params = {
+
+    'q': theBrewery,
+    'at': '38.89206,-77.01991'
+  };
+  
+
+  function onResult(data) {
+    searchResult = data;
+    var breweryList = searchResult.results.items
+
+    for(var i = 0; i < breweryList.length; i++) {
+        if(breweryList[i].title.split(" ")[0].toLowerCase() === theBrewery.split(" ")[0].toLowerCase()) {
+            console.log(breweryList[i].vicinity)
+        }
+    }
+  }
+  
+  function onError(data) {
+    error = data;
+  }
+  
+  search.request(params, {}, onResult, onError);
+
+
+
 $("#searchBtn").on("click", function () {
     $("#breweryList").empty()
     var theCity = $("#cityInput").val().toLowerCase()
@@ -73,6 +111,12 @@ $("#searchBtn").on("click", function () {
 
 })
 
+$("#theForm").submit(function() {
+    $("#searchBtn").click()
+    return false
+})
+
+
 // This is the Twilio portion of our javascript
 
 function clearPersonalInput() {
@@ -95,6 +139,7 @@ $(document).ready(function () {
         var userInfo = {
             name: name,
             correctedNumber: correctedNumber,
+
         }
         timeRef.set({
             showTime: confirmedTime,
@@ -141,6 +186,7 @@ $(document).ready(function () {
         `).appendTo('#brewerySelected')
     })
 
+
     timeRef.on('value', function (snapshot) {
         let timeChosen = snapshot.val().showTime
         $(`
@@ -148,6 +194,9 @@ $(document).ready(function () {
         `).appendTo('#brewerySelected')
     })
 
+
+
+// Send a SMS when button is clicked!
 
 
     // Creating the message to be sent
@@ -206,6 +255,33 @@ $(document).ready(function () {
                                 console.log(data);
                             }
                         })
+
+            console.log(message)
+
+
+            const SID = "ACde7d929d4b9b0f7e32b6f0f553fe9667"
+            const Key = "41cdc646ad2521c5e86216b3b17dca1b"
+            database.ref('contacts').once('value', function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    let name = childSnapshot.val().correctedNumber;
+
+                    $.ajax({
+                        type: 'POST',
+                        url: 'https://api.twilio.com/2010-04-01/Accounts/' + SID + '/Messages.json',
+                        data: {
+                            "To": "+1" + name,
+                            "From": "+19562671699",
+                            "Body": message,
+                        },
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader("Authorization", "Basic " + btoa(SID + ':' + Key));
+                        },
+                        success: function (data) {
+                            console.log(data);
+                        },
+                        error: function (data) {
+                            console.log(data);
+                        }
                     })
                 })
             });
