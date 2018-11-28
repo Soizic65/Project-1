@@ -16,6 +16,44 @@ function reload() {
     location.reload();
 };
 
+
+    
+var theBrewery = "SanTan Brewing Co"
+
+var platform = new H.service.Platform({
+    app_id: 'NjkFyMmOTiHhn4wGczXu',
+    app_code: 'Xv-d8tKUWNWV76K41PAMEQ'
+  });
+  
+  var search = new H.places.Search(platform.getPlacesService()),
+    searchResult, error;
+  
+  var params = {
+
+    'q': theBrewery,
+    'at': '38.89206,-77.01991'
+  };
+  
+
+  function onResult(data) {
+    searchResult = data;
+    var breweryList = searchResult.results.items
+
+    for(var i = 0; i < breweryList.length; i++) {
+        if(breweryList[i].title.split(" ")[0].toLowerCase() === theBrewery.split(" ")[0].toLowerCase()) {
+            console.log(breweryList[i].vicinity)
+        }
+    }
+  }
+  
+  function onError(data) {
+    error = data;
+  }
+  
+  search.request(params, {}, onResult, onError);
+
+
+
 $("#searchBtn").on("click", function () {
     $("#breweryList").empty()
     var theCity = $("#cityInput").val().toLowerCase()
@@ -72,6 +110,12 @@ $("#searchBtn").on("click", function () {
     })
 
 })
+
+$("#theForm").submit(function() {
+    $("#searchBtn").click()
+    return false
+})
+
 
 // This is the Twilio portion of our javascript
 
