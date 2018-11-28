@@ -15,31 +15,40 @@ var timeRef = database.ref('time')
 
 
     
-var theBrewery = "Dry River Brewing"
+var theBrewery = "SanTan Brewing Co"
 
-// var platform = new H.service.Platform({
-//     app_id: 'NjkFyMmOTiHhn4wGczXu',
-//     app_code: 'Xv-d8tKUWNWV76K41PAMEQ'
-//   });
+var platform = new H.service.Platform({
+    app_id: 'NjkFyMmOTiHhn4wGczXu',
+    app_code: 'Xv-d8tKUWNWV76K41PAMEQ'
+  });
   
-//   var search = new H.places.Search(platform.getPlacesService()),
-//     searchResult, error;
+  var search = new H.places.Search(platform.getPlacesService()),
+    searchResult, error;
   
-//   var params = {
+  var params = {
 
-//     'q': theBrewery,
-//     'at': '37.7942,-122.4070'
-//   };
+    'q': theBrewery,
+    'at': '38.89206,-77.01991'
+  };
   
-//   function onResult(data) {
-//     searchResult = data;
-//   }
+
+  function onResult(data) {
+    searchResult = data;
+    var breweryList = searchResult.results.items
+
+    for(var i = 0; i < breweryList.length; i++) {
+        if(breweryList[i].title.split(" ")[0].toLowerCase() === theBrewery.split(" ")[0].toLowerCase()) {
+            console.log(breweryList[i].vicinity)
+        }
+    }
+  }
   
-//   function onError(data) {
-//     error = data;
-//   }
+  function onError(data) {
+    error = data;
+  }
   
-//   search.request(params, {}, onResult, onError);
+  search.request(params, {}, onResult, onError);
+
 
 $("#searchBtn").on("click", function () {
     $("#breweryList").empty()
