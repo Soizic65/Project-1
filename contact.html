@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
         crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.5.1/dist/css/foundation.min.css" integrity="sha256-1mcRjtAxlSjp6XJBgrBeeCORfBp/ppyX4tsvpQVCcpA= sha384-b5S5X654rX3Wo6z5/hnQ4GBmKuIJKMPwrJXn52ypjztlnDK2w9+9hSMBz/asy9Gw sha512-M1VveR2JGzpgWHb0elGqPTltHK3xbvu3Brgjfg4cg5ZNtyyApxw/45yHYsZ/rCVbfoO5MSZxB241wWq642jLtA==" crossorigin="anonymous">
 </head>
 
 <body>
@@ -18,75 +19,80 @@
             <h1 class="display-4" id="quote">"Wish you were beer.."</h1>
         </div>
     </div>
-        <div class="card">
-            <h5 class="card-header">Brewery Selected</h5>
-            <div class="card-body">
-                <table class="table">
-                    <tbody id="brewerySelected">
-
-                    </tbody>
-                </table>
-            </br>
-            <a class="btn btn-secondary" href="index.html" role="button">Return to Search Results</a>
+        <ul class="tabs" data-tabs id="example-tabs">
+            <li class="tabs-title is-active"><a href="#panel1" aria-selected="true">Brewery and Time</a></li>
+            <li class="tabs-title"><a data-tabs-target="panel2" href="#panel2">Contacts</a></li>
+        </ul>
+            <div class="tabs-content" data-tabs-content="example-tabs">
+                <div class="tabs-panel is-active" id="panel1">
+                    <div class="card">
+                        <h5 class="card-header">Brewery Selected</h5>
+                    <div class="card-body">
+                        <table class="table">
+                            <tbody id="brewerySelected">
+                            </tbody>
+                        </table>
+                    </br>
+                    <a class="btn btn-secondary" href="index.html" role="button">Return to Search Results</a>
+                    </div>
+                    </div>
+                </div>
+                <div class="tabs-panel" id="panel2">
+                    <div class="row">
+                        <div class="col-6 col-md-4">
+                            <div class="card">
+                                <h5 class="card-header">Create New Contact</h5>
+                            <div class="card-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="nameInput">Name</label>
+                                    <input type="name" class="form-control" id="nameInput" placeholder="John Doe">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phoneNumberInput">Phone Number</label>
+                                    <input type="phone-number" class="form-control" id="phoneNumberInput" placeholder="555-123-4567">
+                                </div>
+                                <div class="form-group">
+                                    <label for="military time">Confirmed Time</label>
+                                    <input type="input" class="form-control" id="confirmedTime" placeholder="9pm">
+                                </div>
+                                <button type="submit" class="btn btn-secondary" id="submitPersonalInfo">Submit</button>
+                            </form>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <div class="card">
+                                <h5 class="card-header">Contact List</h5>
+                            <div class="card-body">
+                                <table class="table">
+                                <thead>
+                                <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                <tbody id="contactList">
+                                </tbody>
+                                </table>
+                                <br/>
+                                <button type="button" class="btn btn-secondary" id="submitSendSMS">Send Invite</button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
 
+       
 
-        <div class="row">
-        <div class="col-6 col-md-4">
-
-        <div class="card">
-            <h5 class="card-header">Create New Contact</h5>
-            <div class="card-body">
-                <form>
-                    <div class="form-group">
-                        <label for="nameInput">Name</label>
-                        <input type="name" class="form-control" id="nameInput" placeholder="John Doe">
-                    </div>
-                    <div class="form-group">
-                        <label for="phoneNumberInput">Phone Number</label>
-                        <input type="phone-number" class="form-control" id="phoneNumberInput" placeholder="555-123-4567">
-                    </div>
-                    <div class="form-group">
-                        <label for="military time">Confirmed Time</label>
-                        <input type="input" class="form-control" id="confirmedTime" placeholder="9pm">
-                    </div>
-                    <button type="submit" class="btn btn-secondary" id="submitPersonalInfo">Submit</button>
-                </form>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-md-8">
-        <div class="card">
-            <h5 class="card-header">Contact List</h5>
-            <div class="card-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Name</th>
-                            
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody id="contactList">
-                    <!-- <div class="form-check">
-                        <input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
-                      </div> -->
-                    </tbody>
-                </table>
-            <br/>
-            <button type="button" class="btn btn-secondary" id="submitSendSMS">Send Invite</button>
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-
+        
+    <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.5.1/dist/js/foundation.min.js" integrity="sha256-WUKHnLrIrx8dew//IpSEmPN/NT3DGAEmIePQYIEJLLs= sha384-53StQWuVbn6figscdDC3xV00aYCPEz3srBdV/QGSXw3f19og3Tq2wTRe0vJqRTEO sha512-X9O+2f1ty1rzBJOC8AXBnuNUdyJg0m8xMKmbt9I3Vu/UOWmSg5zG+dtnje4wAZrKtkopz/PEDClHZ1LXx5IeOw==" crossorigin="anonymous"></script>
     <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="assets/javascript/javascript.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+
 </body>
 
 </html>
