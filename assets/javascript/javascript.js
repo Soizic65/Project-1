@@ -12,6 +12,10 @@ var database = firebase.database();
 var ref = database.ref('contacts')
 var timeRef = database.ref('time')
 
+function reload() {
+    location.reload();
+};
+
 $("#searchBtn").on("click", function () {
     $("#breweryList").empty()
     var theCity = $("#cityInput").val().toLowerCase()
@@ -74,6 +78,7 @@ $("#searchBtn").on("click", function () {
 function clearPersonalInput() {
     $("#nameInput").val("");
     $("#phoneNumberInput").val("");
+    $('#confirmedTime').val("");
 }
 
 $(document).ready(function () {
@@ -85,14 +90,11 @@ $(document).ready(function () {
             .replace(/[^0-9 am pm]/g, '');
         let correctedNumber = number
             .replace(/[^0-9]/g, '');
-        // let frequency = $('#').val().trim();
-        // let correctedFrequency = frequency
-        //     .replace(/[^0-9]/g, '');
+
 
         var userInfo = {
             name: name,
             correctedNumber: correctedNumber,
-            // correctedFrequency: correctedFrequency,
         }
         timeRef.set({
             showTime: confirmedTime,
@@ -100,94 +102,110 @@ $(document).ready(function () {
 
         ref.push(userInfo)
         clearPersonalInput();
+        reload();
 
     });
 
 
     // Appending info from Firebase to the table
 
-    // var indexNum = this.childSnapshot.val().name;
-    // console.log(indexNum);
 
     database.ref('contacts').on("child_added", function (childSnapshot) {
         let name = childSnapshot.val().name
-        let dataKey = childSnapshot.val().name.key
+        let dataKey = childSnapshot.key
+        let username = name + dataKey
         $(`
         <tr>
             <td scope="row">${name}</td>
+            <td><button type="button" class="btn btn-secondary removeUser" data-key="${dataKey}">Remove</button></td>
         `).appendTo('#contactList')
+
     })
+
+    $('.removeUser').on('click', function(event) {
+        const key = $(this).attr('data-key')
+         ref.child(key).remove()
+         reload()
+     })
+
+    database.ref('brewery').once('value', function (childSnapshot) {
+        let breweryChosen = childSnapshot.val().name
+        $(`
+        <tr>
+            <td scope="row">${breweryChosen}</td>
+        `).appendTo('#brewerySelected')
+    })
+
+    timeRef.on('value', function (snapshot) {
+        let timeChosen = snapshot.val().showTime
+        $(`
+        <td>${timeChosen}</td>
+        `).appendTo('#brewerySelected')
+    })
+
+
 
     // Creating the message to be sent
 
     timeRef.on('value', function (snapshot) {
         let timeChosen = snapshot.val().showTime
-        console.log(timeChosen)
 
 
         database.ref('brewery').once('value', function (childSnapshot) {
             let breweryChosen = childSnapshot.val().name
             let breweryChosenLocation = childSnapshot.val().location
-            console.log(breweryChosen)
-            console.log(breweryChosenLocation)
             const message = "Hey, we're going to " + breweryChosen + " which is at: " + breweryChosenLocation + ". We will be meeting there at: " + timeChosen;
-            console.log(message)
+           
         })
     })
 
 
+    // Send a SMS when button is clicked!
 
-// This code is for time till event
-// let frequency = $('').val().trim();
+    $("#submitSendSMS").click(function () {
 
-// Send a SMS when button is clicked!
+        timeRef.on('value', function (snapshot) {
+            let timeChosen = snapshot.val().showTime
 
-$("#submitSendSMS").click(function () {
-
-    timeRef.on('value', function (snapshot) {
-        let timeChosen = snapshot.val().showTime
-        console.log(timeChosen)
-
-        database.ref('brewery').once('value', function (childSnapshot) {
-            let breweryChosen = childSnapshot.val().name
-            let breweryChosenLocation = childSnapshot.val().location
-            console.log(breweryChosen)
-            console.log(breweryChosenLocation)
-            const message = "Hey, we're going to " + breweryChosen + " which is at: " + breweryChosenLocation + ". We will be meeting there at: " + timeChosen;
-            console.log(message)
+            database.ref('brewery').once('value', function (childSnapshot) {
+                let breweryChosen = childSnapshot.val().name
+                let breweryChosenLocation = childSnapshot.val().location
+                console.log(breweryChosen)
+                console.log(breweryChosenLocation)
+                const message = "Hey, we're going to " + breweryChosen + " which is at: " + breweryChosenLocation + ". We will be meeting there at: " + timeChosen;
+                console.log(message)
 
 
-            const SID = "ACde7d929d4b9b0f7e32b6f0f553fe9667"
-            const Key = "41cdc646ad2521c5e86216b3b17dca1b"
-            database.ref('contacts').once('value', function (snapshot) {
-                snapshot.forEach(function (childSnapshot) {
-                    var childKey = childSnapshot.key;
-                    var childData = childSnapshot.val();
-                    let name = childSnapshot.val().correctedNumber;
-                    console.log(name);
-                    console.log(childKey);
+                const SID = "ACde7d929d4b9b0f7e32b6f0f553fe9667"
+                const Key = "41cdc646ad2521c5e86216b3b17dca1b"
+                database.ref('contacts').once('value', function (snapshot) {
+                    snapshot.forEach(function (childSnapshot) {
+                        var childKey = childSnapshot.key;
+                        var childData = childSnapshot.val();
+                        let name = childSnapshot.val().correctedNumber;
 
-                    $.ajax({
-                        type: 'POST',
-                        url: 'https://api.twilio.com/2010-04-01/Accounts/' + SID + '/Messages.json',
-                        data: {
-                            "To": "+1" + name,
-                            "From": "+19562671699",
-                            "Body": message,
-                        },
-                        beforeSend: function (xhr) {
-                            xhr.setRequestHeader("Authorization", "Basic " + btoa(SID + ':' + Key));
-                        },
-                        success: function (data) {
-                            console.log(data);
-                        },
-                        error: function (data) {
-                            console.log(data);
-                        }
+
+                        $.ajax({
+                            type: 'POST',
+                            url: 'https://api.twilio.com/2010-04-01/Accounts/' + SID + '/Messages.json',
+                            data: {
+                                "To": "+1" + name,
+                                "From": "+19562671699",
+                                "Body": message,
+                            },
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader("Authorization", "Basic " + btoa(SID + ':' + Key));
+                            },
+                            success: function (data) {
+                                console.log(data);
+                            },
+                            error: function (data) {
+                                console.log(data);
+                            }
+                        })
                     })
                 })
-            })
+            });
         });
     });
-});
 });
