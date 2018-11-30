@@ -87,6 +87,10 @@ $("#searchBtn").on("click", function () {
                 function breweryChoice(name, location) {
                     database.ref().child("brewery/name").set(name)
                     database.ref().child("brewery/location").set(location)
+                    $("body").addClass("animated slideOutLeft")
+                    setTimeout(function(){
+                        window.location.replace("contact.html")
+                    }, 500)
                 }
             </script>
         `)
@@ -97,8 +101,8 @@ $("#searchBtn").on("click", function () {
 
             $("#theBody").append(`
                 <tr onClick="breweryChoice('${breweryName}', '${breweryLocation}')">
-                    <td><a href='contact.html'>${breweryName}</a></td>
-                    <td><a href='contact.html'>${breweryLocation}</a></td>
+                    <td>${breweryName}</td>
+                    <td>${breweryLocation}</td>
                 </tr>
             `)
 
