@@ -5,7 +5,7 @@ Project Title: Brewery Crawl
 Team Members: Hailey Dean, Jonathan Cruz, Lupe Chavira, Soizic Holloway 
 
 Project Description:
-Locate brewery near user. Show up to 15 tweets that talk about selected brewery.
+Locate brewery near user. Send text out to group of friends.
 
 Sketch of Final Product:
 
@@ -20,6 +20,8 @@ Rough Breakdown of Tasks:
 4. Options to add contacts for future use
 5. Select contacts to invite to earlier selected brewery
 6. Send text to invite all selected with the name of brewery, address of brewery, invite message, and time/date
+
+https://soizic65.github.io/Project-1/
 
 
 
